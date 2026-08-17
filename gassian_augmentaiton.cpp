@@ -37,6 +37,22 @@ getRowEchelonForm(std::vector<std::vector<int>> matrix, int eqns, int vars) {
   return matrix;
 }
 
+int getRank(std::vector<std::vector<int>> matrix) {
+  int rank{0};
+  for (auto row : matrix) {
+    bool independent{false};
+    for (int val : row) {
+      if (val != 0)
+        independent = true;
+    }
+
+    if (independent)
+      ++rank;
+  }
+
+  return rank;
+}
+
 int main() {
   int numOfVars{0};
   int numOfEqns{0};
@@ -75,12 +91,14 @@ int main() {
     eqn.push_back(result);
   }
 
+  std::cout << "\n";
   for (auto eqn : matrix) {
     for (int val : eqn) {
       std::cout << val << " ";
     }
     std::cout << "\n";
   }
+  std::cout << "\n";
 
   matrix = getRowEchelonForm(matrix, numOfEqns, numOfVars);
 
