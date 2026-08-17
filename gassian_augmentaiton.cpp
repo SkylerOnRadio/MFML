@@ -55,6 +55,18 @@ int getRank(std::vector<std::vector<int>> matrix, int maxCol) {
   return rank;
 }
 
+int typeOfSolution(int augRank, int coefRank, int vars) {
+  if (augRank < coefRank)
+    return 0;
+  else if (augRank == coefRank) {
+    if (augRank < vars)
+      return 1;
+    else if (augRank == vars)
+      return 2;
+  }
+  return -1;
+}
+
 int main() {
   int numOfVars{0};
   int numOfEqns{0};
@@ -93,22 +105,39 @@ int main() {
     eqn.push_back(result);
   }
 
-  std::cout << "\n";
-  for (auto eqn : matrix) {
-    for (int val : eqn) {
-      std::cout << val << " ";
-    }
-    std::cout << "\n";
-  }
-  std::cout << "\n";
+  // std::cout << "\n";
+  // for (auto eqn : matrix) {
+  //   for (int val : eqn) {
+  //     std::cout << val << " ";
+  //   }
+  //   std::cout << "\n";
+  // }
+  // std::cout << "\n";
 
+  int coefRank = getRank(matrix, numOfVars);
   matrix = getRowEchelonForm(matrix, numOfEqns, numOfVars);
+  int augRank = getRank(matrix, numOfVars + 1);
 
-  for (auto eqn : matrix) {
-    for (int val : eqn) {
-      std::cout << val << " ";
+  // for (auto eqn : matrix) {
+  //   for (int val : eqn) {
+  //     std::cout << val << " ";
+  //   }
+  //   std::cout << "\n";
+  // }
+
+  int solutionType = typeOfSolution(augRank, coefRank, numOfVars);
+
+  if (solutionType != 2) {
+    if (solutionType == -1) {
+      std::cout << "There is something wrong!\n";
+      return 0;
     }
-    std::cout << "\n";
+
+    std::cout << (solutionType == 0 ? "There is no solution!"
+                                    : "There are infinite solutions!")
+              << "\n";
+
+    return 0;
   }
 
   return 0;
