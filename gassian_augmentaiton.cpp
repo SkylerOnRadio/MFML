@@ -37,12 +37,14 @@ getRowEchelonForm(std::vector<std::vector<int>> matrix, int eqns, int vars) {
   return matrix;
 }
 
-int getRank(std::vector<std::vector<int>> matrix) {
+// maxCol is needed since we need the rank of the augemented matrix and the
+// original co-efficient matrix
+int getRank(std::vector<std::vector<int>> matrix, int maxCol) {
   int rank{0};
   for (auto row : matrix) {
     bool independent{false};
-    for (int val : row) {
-      if (val != 0)
+    for (int i = 0; i < maxCol; ++i) {
+      if (row.at(i) != 0)
         independent = true;
     }
 
